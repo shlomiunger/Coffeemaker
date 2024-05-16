@@ -10,6 +10,8 @@ utf8_heb_hex_mapping = {
 
 # Mapping for English characters
 utf8_eng_hex_mapping = {}
+# During import, the loops below will execute and populate the utf8_eng_hex_mapping dictionary
+# with the hexadecimal values for uppercase and lowercase English letters.
 for i in range(26):
     utf8_eng_hex_mapping[chr(65 + i)] = hex(65 + i)[2:]
     utf8_eng_hex_mapping[chr(97 + i)] = hex(97 + i)[2:]
