@@ -1,5 +1,15 @@
+# This file contains a function for converting text to UTF-8 hexadecimal representation.
+
+from constants import utf8_hex_mapping
+
 def utf8_hex_representation(text):
-    from constants import utf8_hex_mapping
+    """
+    Converts input text to its UTF-8 hexadecimal representation.
+    Args:
+        text (str): Input text to be converted.
+    Returns:
+        str: UTF-8 hexadecimal representation of the input text.
+    """
 
     hex_representation = ''
 
