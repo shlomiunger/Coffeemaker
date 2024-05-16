@@ -1,12 +1,15 @@
-utf8_hex_mapping = {
+# This file contains mappings of Hebrew/English characters and their corresponding UTF-8 hexadecimal representations.
+
+# Mapping for Hebrew characters
+utf8_heb_hex_mapping = {
     'א': 'd790', 'ב': 'd791', 'ג': 'd792', 'ד': 'd793', 'ה': 'd794', 'ו': 'd795', 'ז': 'd796', 'ח': 'd797',
     'ט': 'd798', 'י': 'd799', 'ך': 'd79a', 'כ': 'd79b', 'ל': 'd79c', 'ם': 'd79d', 'מ': 'd79e', 'ן': 'd79f',
     'נ': 'd7a0', 'ס': 'd7a1', 'ע': 'd7a2', 'ף': 'd7a3', 'פ': 'd7a4', 'ץ': 'd7a5', 'צ': 'd7a6', 'ק': 'd7a7',
-    'ר': 'd7a8', 'ש': 'd7a9', 'ת': 'd7aa',
-    'A': '41', 'B': '42', 'C': '43', 'D': '44', 'E': '45', 'F': '46', 'G': '47', 'H': '48', 'I': '49',
-    'J': '4a', 'K': '4b', 'L': '4c', 'M': '4d', 'N': '4e', 'O': '4f', 'P': '50', 'Q': '51', 'R': '52',
-    'S': '53', 'T': '54', 'U': '55', 'V': '56', 'W': '57', 'X': '58', 'Y': '59', 'Z': '5a',
-    'a': '61', 'b': '62', 'c': '63', 'd': '64', 'e': '65', 'f': '66', 'g': '67', 'h': '68', 'i': '69',
-    'j': '6a', 'k': '6b', 'l': '6c', 'm': '6d', 'n': '6e', 'o': '6f', 'p': '70', 'q': '71', 'r': '72',
-    's': '73', 't': '74', 'u': '75', 'v': '76', 'w': '77', 'x': '78', 'y': '79', 'z': '7a'
+    'ר': 'd7a8', 'ש': 'd7a9', 'ת': 'd7aa'
 }
+
+# Mapping for English characters
+utf8_eng_hex_mapping = {}
+for i in range(26):
+    utf8_eng_hex_mapping[chr(65 + i)] = hex(65 + i)[2:]
+    utf8_eng_hex_mapping[chr(97 + i)] = hex(97 + i)[2:]
