@@ -12,7 +12,6 @@ def main():
         print(f"\n{num_bytes} bytes - You are {num_bytes_over_limit} bytes over the OP_RETURN limit")
 
 
-
 # If the script is executed directly (not imported as a module), call the main function
 if __name__ == "__main__":
     main()
