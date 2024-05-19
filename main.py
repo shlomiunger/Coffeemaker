@@ -5,8 +5,8 @@ from utf8_converter import utf8_hex_representation
 
 # Connect to Bitcoin Core
 def connect_to_rpc():
-    rpc_user = "your_rpc_user"
-    rpc_password = "your_rpc_password"
+    rpc_user = "shlomi"
+    rpc_password = "768841"
     rpc_host = "127.0.0.1"
     rpc_port = "8332"
 
@@ -14,7 +14,7 @@ def connect_to_rpc():
     return AuthServiceProxy(rpc_url)
 
 
-def create_op_return_tx(rpc_connection, hex_message, sat_amount, utxo_inputs, destinations):
+def create_op_return_tx(rpc_connection, hex_message, utxo_inputs, destinations):
     # Set OP_RETURN variable to be equal to hex_message generated in main() function
     op_return_data = hex_message
 
@@ -72,8 +72,6 @@ def main():
         print("Error: OP_RETURN message cannot exceed 80 bytes.")
         sys.exit(1)
 
-    sat_amount = int(input("Enter the amount of satoshis to send: "))
-
     # Connect to Bitcoin Core
     rpc_connection = connect_to_rpc()
 
@@ -86,11 +84,11 @@ def main():
         address = input("Enter destination address (or press enter to finish): ")
         if not address:
             break
-        amount = float(input("Enter amount in BTC to send to this address: "))
+        amount = input("Enter amount in BTC to send to this address: ")
         destinations.append({"address": address, "amount": amount})
 
     # Create the transaction
-    create_op_return_tx(rpc_connection, hex_message, sat_amount, utxo_inputs, destinations)
+    create_op_return_tx(rpc_connection, hex_message, utxo_inputs, destinations)
 
 
 if __name__ == "__main__":
