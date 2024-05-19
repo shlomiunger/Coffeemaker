@@ -3,19 +3,20 @@ from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from utf8_converter import utf8_hex_representation
 
 
-def create_op_return_tx(hex_message, sat_amount, utxo_inputs, destinations):
-
-    # Set OP_RETURN variable to be equal to hex_message generated in main() function
-    op_return_data = hex_message
-
-    # Connect to Bitcoin Core
+# Connect to Bitcoin Core
+def connect_to_rpc():
     rpc_user = "your_rpc_user"
     rpc_password = "your_rpc_password"
     rpc_host = "127.0.0.1"
     rpc_port = "8332"
 
     rpc_url = f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
-    rpc_connection = AuthServiceProxy(rpc_url)
+    return AuthServiceProxy(rpc_url)
+
+
+def create_op_return_tx(rpc_connection, hex_message, sat_amount, utxo_inputs, destinations):
+    # Set OP_RETURN variable to be equal to hex_message generated in main() function
+    op_return_data = hex_message
 
     try:
         # Create a raw transaction with OP_RETURN output
@@ -65,13 +66,7 @@ def main():
     sat_amount = int(input("Enter the amount of satoshis to send: "))
 
     # Connect to Bitcoin Core
-    rpc_user = "your_rpc_user"
-    rpc_password = "your_rpc_password"
-    rpc_host = "127.0.0.1"
-    rpc_port = "8332"
-
-    rpc_url = f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
-    rpc_connection = AuthServiceProxy(rpc_url)
+    rpc_connection = connect_to_rpc()
 
     # Retrieve UTXO inputs from Bitcoin Core
     utxo_inputs = list_utxos(rpc_connection)
@@ -85,7 +80,8 @@ def main():
         amount = float(input("Enter amount in BTC to send to this address: "))
         destinations.append({"address": address, "amount": amount})
 
-    create_op_return_tx(hex_message, sat_amount, utxo_inputs, destinations)
+    create_op_return_tx(rpc_connection, hex_message, sat_amount, utxo_inputs, destinations)
+
 
 if __name__ == "__main__":
     main()
