@@ -26,18 +26,27 @@ def create_op_return_tx(rpc_connection, hex_message, sat_amount, utxo_inputs, de
 
         raw_tx = rpc_connection.createrawtransaction(tx_ins, tx_outs)
         funded_tx = rpc_connection.fundrawtransaction(raw_tx)
-        signed_tx = rpc_connection.signrawtransactionwithwallet(funded_tx["hex"])
 
-        # Check if the transaction is fully signed
-        if not signed_tx["complete"]:
-            print("Transaction not fully signed.")
-            sys.exit(1)
+        # Prompt user to sign the transaction
+        sign_tx = input("Do you want to sign this transaction? (y/n): ")
+        if sign_tx.lower() == 'y':
+            signed_tx = rpc_connection.signrawtransactionwithwallet(funded_tx["hex"])
+            if not signed_tx["complete"]:
+                print("Transaction not fully signed.")
+                sys.exit(1)
+            signed_tx_hex = signed_tx["hex"]
+            print("Transaction signed successfully.")
 
-        # Broadcast the transaction
-        txid = rpc_connection.sendrawtransaction(signed_tx["hex"])
-
-        print("Transaction broadcasted successfully.")
-        print(f"Transaction ID: {txid}")
+            # Prompt user to send the transaction
+            send_tx = input("Do you want to send this transaction? (y/n): ")
+            if send_tx.lower() == 'y':
+                txid = rpc_connection.sendrawtransaction(signed_tx_hex)
+                print("Transaction broadcasted successfully.")
+                print(f"Transaction ID: {txid}")
+            else:
+                print("Transaction not sent.")
+        else:
+            print("Transaction not signed.")
 
     except JSONRPCException as e:
         print(f"An error occurred: {e}")
@@ -80,6 +89,7 @@ def main():
         amount = float(input("Enter amount in BTC to send to this address: "))
         destinations.append({"address": address, "amount": amount})
 
+    # Create the transaction
     create_op_return_tx(rpc_connection, hex_message, sat_amount, utxo_inputs, destinations)
 
 
