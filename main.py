@@ -43,6 +43,15 @@ def create_op_return_tx(hex_message, sat_amount, utxo_inputs, destinations):
         sys.exit(1)
 
 
+def list_utxos(rpc_connection):
+    try:
+        utxos = rpc_connection.listunspent()
+        return utxos
+    except JSONRPCException as e:
+        print(f"Error listing UTXOs: {e}")
+        return []
+
+
 def main():
     message = input("Enter the OP_RETURN message: ")
 
@@ -55,14 +64,17 @@ def main():
 
     sat_amount = int(input("Enter the amount of satoshis to send: "))
 
-    # Input UTXO details
-    utxo_inputs = []
-    while True:
-        txid = input("Enter UTXO txid (or press enter to finish): ")
-        if not txid:
-            break
-        vout = int(input("Enter UTXO vout: "))
-        utxo_inputs.append({"txid": txid, "vout": vout})
+    # Connect to Bitcoin Core
+    rpc_user = "your_rpc_user"
+    rpc_password = "your_rpc_password"
+    rpc_host = "127.0.0.1"
+    rpc_port = "8332"
+
+    rpc_url = f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
+    rpc_connection = AuthServiceProxy(rpc_url)
+
+    # Retrieve UTXO inputs from Bitcoin Core
+    utxo_inputs = list_utxos(rpc_connection)
 
     # Input destination details
     destinations = []
@@ -74,7 +86,6 @@ def main():
         destinations.append({"address": address, "amount": amount})
 
     create_op_return_tx(hex_message, sat_amount, utxo_inputs, destinations)
-
 
 if __name__ == "__main__":
     main()
