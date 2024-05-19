@@ -2,9 +2,11 @@ import sys
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from utf8_converter import utf8_hex_representation
 
-def create_op_return_tx(message, sat_amount, utxo_inputs, destinations):
-    # Convert message to hex using your utf8_hex_representation function
-    op_return_data = utf8_hex_representation(message)
+
+def create_op_return_tx(hex_message, sat_amount, utxo_inputs, destinations):
+
+    # Set OP_RETURN variable to be equal to hex_message generated in main() function
+    op_return_data = hex_message
 
     # Connect to Bitcoin Core
     rpc_user = "your_rpc_user"
@@ -40,8 +42,16 @@ def create_op_return_tx(message, sat_amount, utxo_inputs, destinations):
         print(f"An error occurred: {e}")
         sys.exit(1)
 
+
 def main():
     message = input("Enter the OP_RETURN message: ")
+
+    # Check if message exceeds 80 bytes
+    hex_message = utf8_hex_representation(message)
+    num_bytes = len(hex_message) // 2
+    if num_bytes > 80:
+        print("Error: OP_RETURN message cannot exceed 80 bytes.")
+        sys.exit(1)
 
     sat_amount = int(input("Enter the amount of satoshis to send: "))
 
@@ -63,7 +73,8 @@ def main():
         amount = float(input("Enter amount in BTC to send to this address: "))
         destinations.append({"address": address, "amount": amount})
 
-    create_op_return_tx(message, sat_amount, utxo_inputs, destinations)
+    create_op_return_tx(hex_message, sat_amount, utxo_inputs, destinations)
+
 
 if __name__ == "__main__":
     main()
