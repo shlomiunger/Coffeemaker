@@ -30,7 +30,10 @@ def create_op_return_tx(rpc_connection, hex_message, utxo_inputs, destinations):
         # Prompt user to sign the transaction
         sign_tx = input("Do you want to sign this transaction? (y/n): ")
         if sign_tx.lower() == 'y':
+            passphrase = input("Enter your wallet passphrase: ")
+            rpc_connection.walletpassphrase(passphrase, 30)  # Unlock the wallet for 30 seconds
             signed_tx = rpc_connection.signrawtransactionwithwallet(funded_tx["hex"])
+            rpc_connection.walletlock()  # Lock the wallet after signing
             if not signed_tx["complete"]:
                 print("Transaction not fully signed.")
                 sys.exit(1)
@@ -51,6 +54,7 @@ def create_op_return_tx(rpc_connection, hex_message, utxo_inputs, destinations):
     except JSONRPCException as e:
         print(f"An error occurred: {e}")
         sys.exit(1)
+
 
 
 def list_utxos(rpc_connection):
