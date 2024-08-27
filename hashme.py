@@ -1,7 +1,9 @@
 import hashlib
 
+
 def bitcoin_hash(data):
     return hashlib.sha256(data.encode()).hexdigest()
+
 
 def mine_block(data, leading_zeros):
     nonce = 0
@@ -13,6 +15,7 @@ def mine_block(data, leading_zeros):
         if second_hash.startswith('0' * leading_zeros):
             return second_hash, nonce
         nonce += 1
+
 
 if __name__ == "__main__":
     data = input("Enter the data to hash: ")
